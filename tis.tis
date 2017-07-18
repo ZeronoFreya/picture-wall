@@ -1,0 +1,29 @@
+﻿include "common.tis";
+self.ready = function() {
+    //设置窗口居中
+    setWinToCenter();
+    view.windowTopmost = true;
+    // var h = $(header).box(#height, #border, #view);
+    // setMinSize( 320,197.76 );
+    // 加载或刷新deBug？
+    $(#window-debug).on("click",function(){
+        Sciter.launch( "inspector.exe" );
+        view.connectToInspector($(body));
+    });
+    var ul = $(#ul);
+    for(var i=0;i<10;i++){
+        ul.$append(<li>{i}</li>);
+    }
+    ul.postEvent("is-scroll");
+    var w = 0;
+    ul.onSize = function(){
+        w = this.box(#width, #border, #view);
+        var ppdip =  (this.style#border-spacing).toFloat(#px)
+        // stdout.println(ppdip);
+        
+        w = px(w/4 - ppdip*3);
+        for ( var el in this.$$(li) ) {
+            el.style#width = w;
+        }
+    }
+}
