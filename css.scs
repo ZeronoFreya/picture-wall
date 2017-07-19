@@ -7,7 +7,7 @@
     border-spacing: 10dip;
     overflow: hidden;
     /*flow: horizontal-wrap;*/
-    background: red;
+    /*background: red;*/
     position: relative;
 }
 li{
@@ -16,4 +16,6 @@ li{
     position: absolute;
     top: 0;
     left: 0;
+    background: url(num.jpg) no-repeat top left;
+    background-size: cover;
 }
