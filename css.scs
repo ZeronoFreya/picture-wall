@@ -6,9 +6,14 @@
     height: *;
     border-spacing: 10dip;
     overflow: hidden;
-    flow: horizontal-wrap;
+    /*flow: horizontal-wrap;*/
+    background: red;
+    position: relative;
 }
 li{
     width:50px;
-background: gold;
+    background: gold;
+    position: absolute;
+    top: 0;
+    left: 0;
 }

@@ -1,11 +1,13 @@
 class VScroll: Behavior {
     const SCROLL_DELTA = 5.0; // px, for mouse wheel
-    const SCROLL_DECEL = 0.95; // 减速 
+    const SCROLL_DECEL = 0.95; // 减速
     const SCROLL_OUT_DECEL = 0.74; // 当滚动条超出左右边界时的减速
     const SCROLL_STEP_DELAY = View.ANIMATION_TIMER_SPAN; // 毫秒
     const SCROLL_PADDING_TOP = 20;
     const SCROLL_PADDING_BOTTOM = 20;
     function attached() {
+        this.borderSpacing = (this.style#border-spacing).toFloat(#px);
+        this.baseW = 270;
         this << event is-scroll (evt) {
           var firstTop = this.first.box(#top, #margin, #parent);
           var lastBottom = this.last.box(#bottom, #margin, #parent);
@@ -16,6 +18,47 @@ class VScroll: Behavior {
             this.unsubscribe(mousewheel);
           if(firstTop==0)
             this.scrollTo(0, -SCROLL_PADDING_TOP, false, true);
+        }
+    }
+    var (ulw, liw, column) = 0;
+    var xPos = {};
+    function onSize(){
+        ulw = this.box(#width, #border, #view);
+        if (this.ulwCopy == ulw) return;
+        this.ulwCopy = ulw;
+        column = ulw / this.baseW ;
+        // liw = px( (ulw - ( 320*column + this.borderSpacing*(column-1) ))/column + 320 );
+        liw = Math.floor( (ulw+this.borderSpacing)/column-this.borderSpacing );
+        liw = liw < this.baseW ? this.baseW : liw;
+        var l = 0;
+        for (var i=0;i<column;i++) {
+            xPos[i] = {
+                "l": i*(liw+this.borderSpacing),
+                "b": 0
+            };
+        }
+        var h = 0;
+        var serial = 0;
+        var minColumn = 0;
+        for ( var el in this.$$(li) ) {
+            h = Math.random(10)*100+50;
+            el.style.set {
+                width:px( liw ),
+                height:px( h ),
+                top:px( xPos[serial]["b"] ),
+                left:px( xPos[serial]["l"] )
+            };
+            xPos[serial]["b"] += h + this.borderSpacing;
+
+            minColumn = xPos[serial]["b"];
+            // stdout.println("min",min,h,xPos[i]["l"]);
+            for (var i=0;i<column;i++) {
+                if( minColumn > xPos[i]["b"] ){
+                    minColumn = xPos[i]["b"];
+                    serial = i;
+                    // stdout.println("k",k);
+                }
+            }
         }
     }
     function mousewheel(evt) {
@@ -36,7 +79,6 @@ class VScroll: Behavior {
         //var (scroll_top, scroll_top, scroll_right, scroll_bottom) = 0;
         var (scroll_top, firstTop, lastBottom, height) = 0;
         function animationStep() {
-            
             //当出界时,让velocity迅速的降到0.5以下
             this.velocity *= this.isOut ? SCROLL_OUT_DECEL: SCROLL_DECEL;
             if (Math.abs(this.velocity) < 0.5 || this.stopAnimation) {

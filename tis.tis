@@ -15,15 +15,15 @@ self.ready = function() {
         ul.$append(<li>{i}</li>);
     }
     ul.postEvent("is-scroll");
-    var w = 0;
-    ul.onSize = function(){
-        w = this.box(#width, #border, #view);
-        var ppdip =  (this.style#border-spacing).toFloat(#px)
-        // stdout.println(ppdip);
+    // var w = 0;
+    // ul.onSize = function(){
+    //     w = this.box(#width, #border, #view);
+    //     var ppdip =  (this.style#border-spacing).toFloat(#px)
+    //     // stdout.println(ppdip);
         
-        w = px(w/4 - ppdip*3);
-        for ( var el in this.$$(li) ) {
-            el.style#width = w;
-        }
-    }
+    //     w = px(w/4 - ppdip*3);
+    //     for ( var el in this.$$(li) ) {
+    //         el.style#width = w;
+    //     }
+    // }
 }
