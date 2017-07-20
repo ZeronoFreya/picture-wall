@@ -1,0 +1,52 @@
+class ImgList: Behavior {
+    function attached() {
+        this.borderSpacing = (this.style#border-spacing).toFloat(#px);
+        this.baseW = 270;
+        this << event set-img (evt) {
+            return this.setImg();
+        }
+    }
+    function onSize(){
+        return this.setImg();
+    }
+    var (ulw, liw, column) = 0;
+    var xPos = {};
+    function setImg(){
+        ulw = this.box(#width, #border, #view);
+        if (this.ulwCopy == ulw) return;
+
+        this.ulwCopy = ulw;
+
+        column = ulw / this.baseW;
+        // liw = px( (ulw - ( 320*column + this.borderSpacing*(column-1) ))/column + 320 );
+        liw = Math.floor( (ulw+this.borderSpacing)/column-this.borderSpacing );
+        // liw = liw < this.baseW ? this.baseW : liw;
+        var l = 0;
+        for (var i=0;i<column;i++) {
+            xPos[i] = {
+                "l": i*(liw+this.borderSpacing),
+                "b": 0
+            };
+        }
+        var h = 0;
+        var serial = 0;
+        var minColumn = 0;
+        for ( var el in this.$$(li) ) {
+            h = Math.random(10)*100+50;
+            el.style.set {
+                width:px( liw ),
+                height:px( h ),
+                top:px( xPos[serial]["b"] ),
+                left:px( xPos[serial]["l"] )
+            };
+            xPos[serial]["b"] += h + this.borderSpacing;
+            minColumn = xPos[serial]["b"];
+            for (var i=0;i<column;i++) {
+                if( minColumn > xPos[i]["b"] ){
+                    minColumn = xPos[i]["b"];
+                    serial = i;
+                }
+            }
+        }
+    }
+}

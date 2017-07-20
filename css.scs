@@ -1,6 +1,6 @@
 @import "common.scs";
 #ul{
-    prototype:VScroll url(v-scroll.tis);
+    prototype:ImgList url(imglist.tis);
     /*size: 300dip;*/
     width: *;
     height: *;

@@ -14,7 +14,7 @@ self.ready = function() {
     for(var i=0;i<10;i++){
         ul.$append(<li>{i}</li>);
     }
-    ul.postEvent("is-scroll");
+    ul.postEvent("set-img");
     // var w = 0;
     // ul.onSize = function(){
     //     w = this.box(#width, #border, #view);
