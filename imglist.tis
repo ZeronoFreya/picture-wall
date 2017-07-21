@@ -17,7 +17,8 @@ class ImgList: Behavior {
 
         this.ulwCopy = ulw;
 
-        column = ulw / this.baseW;
+        column = Math.floor( ulw / this.baseW.toFloat() + 0.5 ).toInteger();
+
         // liw = px( (ulw - ( 320*column + this.borderSpacing*(column-1) ))/column + 320 );
         liw = Math.floor( (ulw+this.borderSpacing)/column-this.borderSpacing );
         // liw = liw < this.baseW ? this.baseW : liw;

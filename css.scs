@@ -17,5 +17,4 @@ li{
     top: 0;
     left: 0;
     background: url(num.jpg) no-repeat top left;
-    background-size: cover;
 }
